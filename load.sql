@@ -1,7 +1,7 @@
 set search_path to kaggle_titanic;
 
-drop table raw_train;
-drop table raw_test;
+drop table raw_train cascade;
+drop table raw_test cascade;
 
 create table raw_train(
 passenger_id text,
