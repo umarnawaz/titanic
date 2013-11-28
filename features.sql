@@ -27,8 +27,11 @@ select tt,passenger_id,
 as features
 from train_test order by passenger_id asc;
 
-\copy (select features from features where tt = 'train') to 'train.vw'
-\copy (select features from features where tt = 'test') to 'test.vw'
-\copy (select passenger_id from features where tt = 'train') to 'train.id'
-\copy (select passenger_id from features where tt = 'test') to 'test.id'
+create view train as
+select raw_train.survived || features.features as features
+from raw_train,features
+where raw_train.passenger_id = features.passenger_id
+and features.tt = 'train' order by raw_train.passenger_id asc;
 
+\copy (select features from train) to 'train.vw'
+\copy (select features from features where tt = 'test') to 'test.vw'
